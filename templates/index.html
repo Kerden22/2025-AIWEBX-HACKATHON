@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cyberbullying Classifier</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #121212;
+        --card-bg: #1e1e1e;
+        --accent: #00bfa6;
+        --text: #e0e0e0;
+        --text-muted: #888;
+        --border: #2c2c2c;
+        --font-base: 18px;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        font-size: var(--font-base);
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Inter", sans-serif;
+        line-height: 1.6;
+      }
+      nav {
+        background: var(--card-bg);
+        border-bottom: 1px solid var(--border);
+      }
+      nav ul {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        padding: 1rem 0;
+      }
+      nav ul li {
+        margin: 0 1.5rem;
+      }
+      nav ul li a {
+        color: var(--text);
+        text-decoration: none;
+        font-weight: 600;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        transition: background 0.2s;
+        font-size: 1rem;
+      }
+      nav ul li a.active,
+      nav ul li a:hover {
+        background: var(--accent);
+        color: var(--bg);
+      }
+      .container {
+        max-width: 1200px;
+        margin: 3rem auto;
+        padding: 0 2rem;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 3rem;
+        font-size: 2.75rem;
+        font-weight: 700;
+      }
+      /* Tam genişlikte, kenarlara yaslanan görsel + chat düzeni */
+      .image-chat-layout {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 2rem;
+        width: 100%;
+      }
+      .image-card {
+        flex: 0 0 350px; /* yeniden büyütüldü */
+        height: 350px; /* yeniden büyütüldü */
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+      }
+      /* Kenardan biraz boşluk bırak */
+      .image-chat-layout > .image-card:first-child {
+        margin-left: 1rem;
+      }
+      .image-chat-layout > .image-card:last-child {
+        margin-right: 1rem;
+      }
+
+      .image-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .chat-card {
+        flex: 1;
+        max-width: 700px;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 3rem;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+      }
+      .form-group {
+        margin-bottom: 2rem;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 0.75rem;
+        font-weight: 600;
+        font-size: 1.1rem;
+      }
+      textarea {
+        width: 100%;
+        padding: 1rem;
+        background: #2c2c2c;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--text);
+        font-size: 1rem;
+        line-height: 1.4;
+        resize: vertical;
+        min-height: 250px;
+      }
+      textarea::placeholder {
+        color: var(--text-muted);
+        font-size: 1rem;
+      }
+      .btn {
+        width: 100%;
+        padding: 1.1rem;
+        background: var(--accent);
+        color: var(--bg);
+        font-weight: 700;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .btn:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+      .btn:hover:not(:disabled) {
+        background: #00a18c;
+      }
+      #result {
+        display: none;
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background: #2c2c2c;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+      }
+      #result p {
+        margin-bottom: 0.75rem;
+        font-size: 1.1rem;
+      }
+      #label {
+        color: var(--accent);
+        font-weight: 700;
+      }
+      footer {
+        text-align: center;
+        margin: 4rem 0 2rem;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+      }
+      /* Mobil düzen */
+      @media (max-width: 1000px) {
+        .image-chat-layout {
+          flex-direction: column;
+          align-items: center;
+          gap: 2rem;
+        }
+        .image-card {
+          width: 280px; /* mobilde de büyütüldü */
+          height: 280px;
+        }
+        .image-chat-layout > .image-card:first-child {
+          margin-left: 0;
+        }
+        .image-chat-layout > .image-card:last-child {
+          margin-right: 0;
+        }
+        .chat-card {
+          width: 90%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a href="/" class="active">Tahmin</a></li>
+        <li><a href="/charts">Görseller</a></li>
+      </ul>
+    </nav>
+
+    <div class="container">
+      <h1>Cyberbullying Classifier</h1>
+    </div>
+
+    <!-- tam genişlik düzen; container dışında -->
+    <div class="image-chat-layout">
+      <!-- Sol görsel -->
+      <div class="image-card">
+        <img src="static/siber7.png" alt="Sol Görsel" />
+      </div>
+
+      <!-- Orta chat -->
+      <div class="chat-card">
+        <div class="form-group">
+          <label for="inputText">Metni girin:</label>
+          <textarea id="inputText" placeholder="Bir tweet yazın..."></textarea>
+        </div>
+        <button id="btnPredict" class="btn">Predict</button>
+        <div id="result">
+          <p><strong>Label:</strong> <span id="label"></span></p>
+        </div>
+      </div>
+
+      <!-- Sağ görsel -->
+      <div class="image-card">
+        <img src="static/siber4.png" alt="Sağ Görsel" />
+      </div>
+    </div>
+
+    <footer>&copy; 2025 Cyberbullying Classifier</footer>
+
+    <script>
+      document
+        .getElementById("btnPredict")
+        .addEventListener("click", async () => {
+          const btn = document.getElementById("btnPredict");
+          const text = document.getElementById("inputText").value.trim();
+          if (!text) {
+            alert("Lütfen metin girin.");
+            return;
+          }
+          btn.disabled = true;
+          btn.textContent = "Predicting…";
+          try {
+            const res = await fetch("/predict", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ text }),
+            });
+            if (!res.ok) throw new Error(res.statusText);
+            const data = await res.json();
+            document.getElementById("label").textContent = data.label_name;
+            document.getElementById("result").style.display = "block";
+          } catch (err) {
+            console.error(err);
+            alert("Bir hata oldu: " + err.message);
+          } finally {
+            btn.disabled = false;
+            btn.textContent = "Predict";
+          }
+        });
+    </script>
+  </body>
+</html>
