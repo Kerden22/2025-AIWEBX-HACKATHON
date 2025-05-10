@@ -1,0 +1,20 @@
+# Jupyter checkpoint klasörleri
+.ipynb_checkpoints/
+
+# Python cache dizinleri
+__pycache__/
+*.py[cod]
+
+# Dataset temizlenmiş hali (CSV)
+dataset_clean.csv
+
+# GloVe embedding dosyaları
+glove*
+
+# VSCode/IDE ayarları (opsiyonel eklemeler)
+.vscode/
+.idea/
+
+# Sanal ortam klasörleri (eğer kullanıyorsan)
+env/
+venv/
